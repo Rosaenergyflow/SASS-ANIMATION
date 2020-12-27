@@ -1,0 +1,199 @@
+* {
+  box-sizing: border-box;
+}
+
+
+.strips {
+  min-height: 100vh;
+    text-align: center;
+    overflow: hidden;
+    color: white;
+    background-color: #302929;
+  }
+  .strips__strip {
+    will-change: width, left, z-index, height;
+    position: absolute;
+    width: 20%;
+    min-height: 100vh;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  @for $i from 0 to 5 { 
+    $x: $i+1;
+    .strips__strip:nth-child(#{$x}) {
+      left:20vw * $i;
+    }
+  }
+  
+@mixin animacion1($numero,$image,$porcentaje1,$porcentaje2) {
+        .strips__strip:nth-child(#{$numero}) .strip__content {
+                background-image: url(#{$image}); 
+                background-size: cover;
+        -webkit-transform: translate3d($porcentaje1, $porcentaje2, 0);
+              transform: translate3d($porcentaje1, $porcentaje2, 0);
+        -webkit-animation-name: strip+$numero;
+              animation-name: strip+$numero;
+        -webkit-animation-delay:  0.1s * $numero;
+              animation-delay:  0.1s  * $numero;
+        }
+}
+  
+  @include animacion1(1,'img/1.jpg',-100%,0);
+  @include animacion1(2,'img/2.jpg',0,100%);
+  @include animacion1(3,'img/3.jpg',0,-100%);
+  @include animacion1(4,'img/4.jpg',0,100%);
+  @include animacion1(5,'img/5.jpg',100%,0);
+
+
+
+.strips .strip__content {
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+          animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+.strips .strip__content:hover:before {
+  -webkit-transform: skew(0deg) scale(3) translate(0, 0);
+          transform: skew(0deg) scale(3) translate(0, 0);
+  opacity: 0.1;
+}
+.strips .strip__content:before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:#302929;
+  opacity: 0.5;
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+  -webkit-transform: skew(30deg) scaleY(1) translate(0, 0);
+          transform: skew(30deg) scaleY(1) translate(0, 0);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.strips .strip__inner-text {
+  will-change: transform, opacity;
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  -webkit-transform: translate(-50%, -50%) scale(0.5);
+          transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.strips__strip--expanded {
+  width: 100%;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 3;
+  cursor: default;
+}
+@media screen and (max-width: 760px) {
+  .strips__strip--expanded {
+    min-height: 100vh;
+  }
+}
+.strips__strip--expanded .strip__content:hover:before {
+  -webkit-transform: skew(-30deg) scale(1) translate(0, 0);
+          transform: skew(-30deg) scale(1) translate(0, 0);
+  opacity: 0.05;
+}
+.strips__strip--expanded .strip__title {
+  opacity: 0;
+}
+.strips__strip--expanded .strip__inner-text {
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+          transform: translate(-50%, -50%) scale(1);
+}
+
+.strip__title {
+  display: block;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  font-family: 'Tenor Sans', sans-serif;  
+  color: white;
+  text-shadow: 0.5px 0.5px 2px #302929,0.5px 0.5px 2px #302929,0.5px 0.5px 2px #302929;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+
+.strip__close {
+  position: absolute;
+  right: 3vw;
+  top: 3vw;
+  opacity: 0;
+  z-index: 10;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+  transition-delay: 0.5s;
+}
+.strip__close--show {
+  opacity: 1;
+}
+
+
+@mixin animacionStrip($name,$porcentaje1,$porcentaje2){
+
+      @-webkit-keyframes #{$name} {
+          0% {
+            -webkit-transform: translate3d($porcentaje1, $porcentaje2, 0);
+                    transform: translate3d($porcentaje1, $porcentaje2, 0);
+          }
+          100% {
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+      }
+      
+      @keyframes #{$name} {
+          0% {
+            -webkit-transform: translate3d($porcentaje1, $porcentaje2, 0);
+                    transform: translate3d($porcentaje1, $porcentaje2, 0);
+          }
+          100% {
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+      }
+}
+
+@include animacionStrip(strip1,-100%,0);
+@include animacionStrip(strip2,0,100%);
+@include animacionStrip(strip3,0,-100%);
+@include animacionStrip(strip4,0,100%);
+@include animacionStrip(strip5,100%,0);
+
+
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
